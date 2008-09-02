@@ -1,0 +1,40 @@
+--- origsrc/cssed-python-plugin-0.2/configure.in	2005-11-23 11:55:41.000000000 -0600
++++ src/cssed-python-plugin-0.2/configure.in	2008-09-02 01:47:47.740180100 -0500
+@@ -10,6 +10,7 @@
+ AC_HEADER_STDC
+ 
+ AC_CANONICAL_HOST
++AC_PROG_LIBTOOL
+ 
+ dnl ************************
+ dnl Checks for OS type
+--- origsrc/cssed-python-plugin-0.2/src/Makefile.am	2005-10-16 03:09:58.000000000 -0500
++++ src/cssed-python-plugin-0.2/src/Makefile.am	2008-09-02 01:49:09.588145300 -0500
+@@ -1,6 +1,6 @@
+ ## Process this file with automake to produce Makefile.in
+ plugindir=$(prefix)/lib/cssed/plugins
+-plugin_PROGRAMS=pythonscript.so
++plugin_LTLIBRARIES=pythonscript.la
+ 
+ #the core pplugin files
+ SRCS=\
+@@ -8,16 +8,9 @@
+ cssed-pyobject.c cssed-pyobject.h \
+ pycssed-constants-table.c pycssed-constants-table.h
+ 
+-if ISDARWIN
+-pythonscript_so_SOURCES = $(SRCS)
+-pythonscript_so_LDFLAGS =  -bundle -flat_namespace -undefined suppress
+-pythonscript_so_LDADD = @PACKAGE_LIBS@
+-pythonscript_so_CFLAGS = -fno-common
+-else
+-pythonscript_so_SOURCES= $(SRCS)
+-pythonscript_so_LDFLAGS = -shared -fPICS
+-pythonscript_so_LDADD = @PACKAGE_LIBS@
+-endif
++pythonscript_la_SOURCES= $(SRCS)
++pythonscript_la_LDFLAGS = -module -avoid-version -no-undefined
++pythonscript_la_LIBADD = @PACKAGE_LIBS@
+ 
+ INCLUDES=\
+ 	-DPACKAGE_LOCALE_DIR=\""$(prefix)/share/locale"\" \
